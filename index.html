@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CSEC Avurudu Festival 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Cinzel:wght@400;600;700&family=Noto+Sans+Sinhala:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --cream: #FDF6E3;
+    --light-yellow: #FFF8C5;
+    --gold: #C9922A;
+    --gold-light: #E8B84B;
+    --gold-pale: #F5DFA0;
+    --brown-dark: #5C3A10;
+    --brown-mid: #8B5E1A;
+    --red-festival: #C0392B;
+    --green-fresh: #2E7D32;
+    --text-dark: #3B2507;
+    --text-mid: #6B4A1A;
+    --shadow-gold: rgba(201,146,42,0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Abhaya Libre', serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .font-sinhala { font-family: 'Noto Sans Sinhala', sans-serif; }
+  .font-display { font-family: 'Cinzel', serif; }
+
+  /* ─── BACKGROUND PATTERN ─── */
+  .bg-pattern {
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(232,184,75,0.10) 0%, transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(201,146,42,0.08) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9922A' fill-opacity='0.04'%3E%3Cpath d='M30 0 L32 28 L60 30 L32 32 L30 60 L28 32 L0 30 L28 28Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* ─── LANGUAGE TOGGLE ─── */
+  .lang-toggle {
+    position: fixed; top: 1.2rem; right: 1.2rem; z-index: 1000;
+    display: flex; gap: 0; border-radius: 50px; overflow: hidden;
+    box-shadow: 0 2px 16px var(--shadow-gold);
+    border: 1.5px solid var(--gold-light);
+  }
+  .lang-btn {
+    padding: 0.45rem 1.1rem; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; transition: all 0.3s; border: none; outline: none;
+    background: var(--cream); color: var(--brown-mid);
+    font-family: 'Abhaya Libre', serif;
+  }
+  .lang-btn.active {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white;
+  }
+  .lang-btn:first-child { border-right: 1px solid var(--gold-pale); }
+
+  /* ─── ENVELOPE SECTION ─── */
+  #envelope-scene {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: var(--cream);
+    z-index: 50;
+    transition: opacity .8s ease, visibility .8s ease;
+  }
+  #envelope-scene.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .scene-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 7px;
+    color: var(--brown-mid); text-transform: uppercase;
+    margin-bottom: 40px; opacity: 0;
+    animation: envFadeUp .8s ease .3s forwards;
+  }
+
+  /* Envelope wrapper — perspective lives here */
+  #env-wrap {
+    width: min(360px, 88vw);
+    height: 240px;
+    cursor: pointer;
+    perspective: 1200px;
+    position: relative;
+    opacity: 0;
+    animation: envFadeUp .8s ease .6s forwards;
+  }
+
+  /* The envelope itself */
+  #envelope {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 14px 44px rgba(100,60,0,.2));
+  }
+
+  .env-body {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #F8EFC0 0%, #EDD87A 60%, #D4A820 100%);
+    border-radius: 6px;
+    border: 1px solid var(--gold-pale);
+  }
+  /* Inner decorative frame */
+  .env-body::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(201,146,42,.35);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .env-left {
+    position: absolute; top: 0; left: 0;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, #E8D46A, #D4B840);
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+  .env-right {
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    background: linear-gradient(to left, #D4A820, #C49010);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
+  .env-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to top, #C9922A, #E8C84A);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+    border-radius: 0 0 6px 6px;
+  }
+
+  /* TOP FLAP */
+  .env-flap {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(175deg, #F8EFC0 0%, #EDD87A 55%, #C9922A 100%);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+    transform-origin: top center;
+    border-top: 1px solid var(--gold-pale);
+    transition: transform .95s cubic-bezier(.4,0,.2,1);
+    z-index: 2;
+  }
+  .env-flap.open { transform: rotateX(-180deg); }
+
+  /* WAX SEAL */
+  #env-seal {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -22%);
+    width: 68px; height: 68px;
+    z-index: 10;
+    cursor: pointer;
+    transition: transform .3s;
+    filter: drop-shadow(0 3px 10px rgba(0,0,0,.25));
+  }
+  #env-seal:hover { transform: translate(-50%, -22%) scale(1.08); }
+  #env-seal.broken { animation: sealCrumble .5s ease forwards; }
+
+  @keyframes sealCrumble {
+    0%   { transform: translate(-50%,-22%) scale(1); }
+    25%  { transform: translate(-50%,-22%) scale(1.25) rotate(8deg); }
+    60%  { transform: translate(-50%,-22%) scale(.6) rotate(-14deg); opacity: .4; }
+    100% { transform: translate(-50%,-22%) scale(0) rotate(22deg); opacity: 0; }
+  }
+
+  .scene-hint {
+    margin-top: 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold);
+    opacity: 0;
+    animation: envFadeUp .8s ease 1.1s forwards;
+  }
+
+  @keyframes envFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+    /* ─── INVITATION CARD ─── */
+  .inv-card {
+    background: linear-gradient(160deg, #FFFDF0 0%, #FFF8D0 40%, #FFFADC 100%);
+    border-radius: 16px;
+    box-shadow: 0 24px 80px rgba(100,60,0,0.18), 0 4px 20px rgba(100,60,0,0.10);
+    border: 1px solid var(--gold-pale);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .inv-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9922A' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ─── MAIN CONTENT (after envelope opens) ─── */
+  #main-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  #main-content.fade-in { opacity: 1; }
+
+  /* ─── HERO / HEADER ─── */
+  .hero {
+    background: linear-gradient(160deg, #FDF6E3 0%, #FFF8C5 40%, #FDF6E3 100%);
+    padding: 4rem 1rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(232,184,75,0.18) 0%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9922A' fill-opacity='0.03'%3E%3Cpath d='M50 10 L52 48 L90 50 L52 52 L50 90 L48 52 L10 50 L48 48Z'/%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* Sun motif */
+  .sun-motif {
+    width: 120px; height: 120px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  /* ─── DECORATIVE BORDER ─── */
+  .deco-border {
+    border: 2px solid var(--gold-pale);
+    border-radius: 12px;
+    position: relative;
+  }
+  .deco-border::before, .deco-border::after {
+    content: '✦';
+    position: absolute; top: -0.7rem;
+    background: var(--cream); padding: 0 0.4rem;
+    color: var(--gold); font-size: 0.9rem;
+  }
+  .deco-border::before { left: 1.5rem; }
+  .deco-border::after { right: 1.5rem; }
+
+  /* ─── COUNTDOWN ─── */
+  .countdown-box {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--brown-mid) 100%);
+    border-radius: 16px;
+    padding: 2rem 1rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 8px 32px var(--shadow-gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .countdown-box::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='25' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .timer-unit {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    border-radius: 10px;
+    padding: 0.75rem 0.5rem;
+    min-width: 70px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .timer-num {
+    font-family: 'Cinzel', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .timer-label { font-size: 0.7rem; opacity: 0.85; margin-top: 0.3rem; letter-spacing: 0.05em; }
+
+  /* ─── AGENDA ─── */
+  .agenda-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(201,146,42,0.12);
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-item:hover { background: rgba(232,184,75,0.08); }
+  .agenda-time {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--gold); min-width: 80px;
+    padding-top: 0.1rem;
+  }
+  .agenda-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gold-light); border: 2px solid var(--gold);
+    flex-shrink: 0; margin-top: 0.35rem;
+  }
+  .agenda-name { font-size: 0.95rem; color: var(--text-dark); line-height: 1.4; }
+
+  /* ─── SECTION TITLES ─── */
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem; font-weight: 700;
+    color: var(--brown-dark);
+    text-align: center;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+  .section-title-si {
+    font-family: 'Noto Sans Sinhala', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--brown-dark);
+    text-align: center;
+    margin-bottom: 0.4rem;
+  }
+  .divider-gold {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin: 0 auto 2rem; max-width: 300px;
+  }
+  .divider-gold::before, .divider-gold::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .divider-gold::after { background: linear-gradient(to left, transparent, var(--gold)); }
+  .divider-gold span { color: var(--gold); font-size: 1rem; }
+
+  /* ─── LOCATION ─── */
+  .map-frame {
+    width: 100%; height: 280px; border-radius: 12px;
+    border: 2px solid var(--gold-pale);
+    overflow: hidden;
+    background: linear-gradient(135deg, #F0E8C0 0%, #EDD87A 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .map-frame iframe {
+    width: 100%; height: 100%; border: none;
+  }
+
+  .directions-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.8rem;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: white; border-radius: 50px; text-decoration: none;
+    font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 600;
+    box-shadow: 0 4px 16px var(--shadow-gold);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none; cursor: pointer;
+  }
+  .directions-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--shadow-gold); }
+
+  /* ─── FOOTER ─── */
+  .footer-band {
+    background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown-mid) 100%);
+    color: var(--gold-pale);
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  /* ─── ERABADU / FLORAL MOTIF DECORATIONS ─── */
+  .floral-corner {
+    position: absolute;
+    width: 80px; height: 80px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .floral-tl { top: 0; left: 0; transform: rotate(0deg); }
+  .floral-tr { top: 0; right: 0; transform: rotate(90deg); }
+  .floral-bl { bottom: 0; left: 0; transform: rotate(270deg); }
+  .floral-br { bottom: 0; right: 0; transform: rotate(180deg); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 480px) {
+    .timer-num { font-size: 1.7rem; }
+    .timer-unit { min-width: 58px; padding: 0.6rem 0.3rem; }
+    .hero h1 { font-size: 1.6rem !important; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes sparkle { 0%,100% { opacity: 1; transform: scale(1) rotate(0deg); } 50% { opacity: 0.7; transform: scale(1.1) rotate(15deg); } }
+  @keyframes pulse-gold { 0%,100% { box-shadow: 0 0 0 0 rgba(201,146,42,0.4); } 50% { box-shadow: 0 0 0 12px rgba(201,146,42,0); } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes rotateRay { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
+  .pulse-gold { animation: pulse-gold 2.5s ease-in-out infinite; }
+
+  .section-reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .section-reveal.visible { opacity: 1; transform: none; }
+
+  /* Koha bird SVG watermark */
+  .koha-watermark {
+    position: absolute; opacity: 0.04; pointer-events: none;
+    right: -20px; top: 50%; transform: translateY(-50%);
+    width: 200px;
+  }
+</style>
+</head>
+<body class="bg-pattern">
+
+<!-- Language Toggle
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">English</button>
+  <button class="lang-btn" id="btn-si" onclick="setLang('si')">සිංහල</button>
+</div> -->
+
+<!-- ════════════════════════════════════════
+     ENVELOPE SCENE
+════════════════════════════════════════ -->
+<div id="envelope-scene">
+  <img src="csec_logo.png" alt="CSEC Logo" style="max-height: 80px; width: auto; margin-bottom: 10px;">
+  <!-- <p class="scene-eyebrow">CSEC Avurudu Festival 2026</p> -->
+  <h1 style="font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--brown-dark);line-height:1.2;margin-bottom:0.4rem;" class="lang-en">
+      CSEC Avurudu Festival 2026
+    </h1>
+    <br>
+
+  <div id="env-wrap" onclick="openEnvelope()">
+    <div id="envelope">
+      <div class="env-body"></div>
+      <div class="env-left"></div>
+      <div class="env-right"></div>
+      <div class="env-bottom"></div>
+      <div class="env-flap" id="env-flap"></div>
+
+      <!-- Wax Seal -->
+<div id="env-seal">
+  <svg width="68" height="68" viewBox="0 0 68 68">
+    <circle cx="34" cy="34" r="32" fill="#C9922A"/>
+    <circle cx="34" cy="34" r="28" fill="none" stroke="#E8B84B" stroke-width="1.2"/>
+    <circle cx="34" cy="34" r="23" fill="#A87820"/>
+    
+    <g stroke="#F5DFA0" stroke-width="1" stroke-linecap="round" opacity=".7">
+      <line x1="34" y1="7"  x2="34" y2="13"/>
+      <line x1="34" y1="55" x2="34" y2="61"/>
+      <line x1="7"  y1="34" x2="13" y2="34"/>
+      <line x1="55" y1="34" x2="61" y2="34"/>
+      <line x1="14" y1="14" x2="18" y2="18"/>
+      <line x1="50" y1="50" x2="54" y2="54"/>
+      <line x1="54" y1="14" x2="50" y2="18"/>
+      <line x1="14" y1="54" x2="18" y2="50"/>
+    </g>
+
+    <circle cx="34" cy="34" r="12" fill="#FFF8C5" opacity=".9"/>
+
+    <foreignObject x="24" y="24" width="20" height="20">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;">
+        <img src="csec_logo.png" style="width: 100%; height: auto; filter: contrast(1.2) sepia(0.5);"/>
+      </div>
+    </foreignObject>
+  </svg>
+</div>
+    </div>
+  </div>
+
+  <p class="scene-hint">✦ Click to open invitation ✦</p>
+</div>
+
+<!-- ════════════════════════════════════════
+     MAIN INVITATION CONTENT
+════════════════════════════════════════ -->
+<div id="main-content">
+
+  <!-- ── HERO ── -->
+  <section class="hero section-reveal">
+    <!-- Sun Motif SVG -->
+    <div class="sun-motif animate-float" style="position: relative; width: 120px; height: 120px; margin: auto;">
+    
+    <img src="sun.png" alt="Rotating Sun Background" 
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+                animation: rotateRay 30s linear infinite; transform-origin: center;">
+
+    <img src="sun_mid.png" alt="Still Sun Face" 
+         style="position: absolute; top: 10%; left: 10%; width: 80%; height: 80%; 
+                z-index: 1;">
+
+    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+      </svg>
+  </div>
+
+    <!-- Erabadu flowers row
+    <div style="display:flex;justify-content:center;gap:0.6rem;margin-bottom:1rem;opacity:0.7">
+      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#C0392B"/><ellipse cx="12" cy="5" rx="3" ry="5" fill="#C0392B" opacity="0.8"/><ellipse cx="12" cy="19" rx="3" ry="5" fill="#C0392B" opacity="0.8" transform="rotate(180 12 12)"/><ellipse cx="5" cy="12" rx="5" ry="3" fill="#C0392B" opacity="0.6"/><ellipse cx="19" cy="12" rx="5" ry="3" fill="#C0392B" opacity="0.6"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#C0392B"/><ellipse cx="12" cy="4" rx="3" ry="6" fill="#C0392B"/><ellipse cx="12" cy="20" rx="3" ry="6" fill="#C0392B" transform="rotate(180 12 12)"/><ellipse cx="4" cy="12" rx="6" ry="3" fill="#C0392B" opacity="0.7"/><ellipse cx="20" cy="12" rx="6" ry="3" fill="#C0392B" opacity="0.7"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="#C0392B"/><ellipse cx="12" cy="5" rx="3" ry="5" fill="#C0392B" opacity="0.8"/><ellipse cx="12" cy="19" rx="3" ry="5" fill="#C0392B" opacity="0.8" transform="rotate(180 12 12)"/><ellipse cx="5" cy="12" rx="5" ry="3" fill="#C0392B" opacity="0.6"/><ellipse cx="19" cy="12" rx="5" ry="3" fill="#C0392B" opacity="0.6"/></svg>
+    </div> -->
+
+    <!-- CSEC Logo placeholder + Name -->
+<div style="margin-bottom:0.5rem;">
+    <div style="display:inline-flex; align-items:center; gap:0.6rem; border-radius:50px; padding:0.4rem 1.2rem;">
+        <img src="csec_logo.png" alt="CSEC Logo" style="max-height: 80px; width: auto; margin-bottom: 10px;">
+    </div>
+</div>
+
+    <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.8rem;" class="lang-en">✦ CORDIALLY INVITES YOU TO ✦</p>
+    <p style="font-family:'Noto Sans Sinhala',sans-serif;font-size:0.75rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.8rem;display:none;" class="lang-si">✦ ගෞරවයෙන් ඇරයුම් කර සිටිමු ✦</p>
+
+    <h1 style="font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:var(--brown-dark);line-height:1.2;margin-bottom:0.4rem;" class="lang-en">
+      Sinhala & Tamil<br/>New Year Festival
+    </h1>
+    <h1 style="font-family:'Noto Sans Sinhala',sans-serif;font-size:1.8rem;font-weight:700;color:var(--brown-dark);line-height:1.3;margin-bottom:0.4rem;display:none;" class="lang-si">
+      සිංහල හා දෙමළ<br/>අලුත් අවුරුදු උත්සවය
+    </h1>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:0.6rem;margin:0.8rem 0;">
+      <div style="height:1px;width:40px;background:linear-gradient(to right,transparent,var(--gold));"></div>
+      <svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="#C9922A"/><circle cx="12" cy="12" r="8" fill="none" stroke="#C9922A" stroke-width="1" opacity="0.4"/></svg>
+      <div style="height:1px;width:40px;background:linear-gradient(to left,transparent,var(--gold));"></div>
+    </div>
+
+    <p style="font-family:'Cinzel',serif;font-size:1.05rem;font-weight:600;color:var(--gold);" class="lang-en">April 21, 2026 &nbsp;·&nbsp; 10:00 AM onwards</p>
+    <p style="font-family:'Noto Sans Sinhala',sans-serif;font-size:1rem;font-weight:600;color:var(--gold);display:none;" class="lang-si">අප්‍රේල් 21, 2026 &nbsp;·&nbsp; ප.ව. 10:00 සිට</p>
+
+    <p style="font-size:0.82rem;color:var(--text-mid);margin-top:0.5rem;letter-spacing:0.05em;" class="lang-en">Civil & Structural Engineering Consultants (Pvt.) Ltd.</p>
+    <p style="font-family:'Noto Sans Sinhala',sans-serif;font-size:0.82rem;color:var(--text-mid);margin-top:0.5rem;display:none;" class="lang-si">Civil & Structural Engineering Consultants (Pvt.) Ltd.</p>
+
+    <!-- Koha bird watermark -->
+    <svg class="koha-watermark" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M30 80 Q50 40 90 50 Q120 55 130 40 Q140 25 160 30 Q180 35 190 50 Q170 48 155 55 Q140 62 130 60 Q110 65 90 75 Q70 85 30 80Z" fill="#C9922A"/>
+      <circle cx="165" cy="32" r="6" fill="#C9922A"/>
+      <path d="M170 30 Q180 25 190 28" stroke="#C9922A" stroke-width="2" stroke-linecap="round"/>
+      <path d="M90 75 Q85 90 80 100 Q75 110 72 115" stroke="#C9922A" stroke-width="3" stroke-linecap="round"/>
+      <path d="M100 74 Q98 88 96 100" stroke="#C9922A" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <!-- ── COUNTDOWN ── -->
+  <section class="px-4 py-10 section-reveal">
+    <div class="max-w-2xl mx-auto">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem;">
+      <img src="image_3.png" alt="Decorative Kaju" style="width: 45px; height: auto;">
+      <h2 class="section-title lang-en">Time Until the Festival</h2>
+      <h2 class="section-title-si lang-si" style="display:none;">උත්සවයට ඇති කාලය</h2>
+    </div>
+      <div class="divider-gold"><span>✦</span></div>
+      <div class="countdown-box">
+        <p style="font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;opacity:0.8;margin-bottom:1.2rem;" class="lang-en">COUNTING DOWN TO AVURUDU</p>
+        <p style="font-family:'Noto Sans Sinhala',sans-serif;font-size:0.75rem;letter-spacing:0.1em;opacity:0.8;margin-bottom:1.2rem;display:none;" class="lang-si">අවුරුදු දිනය වෙත ගණන් කිරීම</p>
+        <div style="display:flex;justify-content:center;gap:0.8rem;flex-wrap:wrap;">
+          <div class="timer-unit"><div class="timer-num" id="days">00</div><div class="timer-label lang-en">Days</div><div class="timer-label lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">දින</div></div>
+          <div style="font-family:'Cinzel',serif;font-size:2rem;color:rgba(255,255,255,0.5);align-self:flex-start;padding-top:0.7rem;">:</div>
+          <div class="timer-unit"><div class="timer-num" id="hours">00</div><div class="timer-label lang-en">Hours</div><div class="timer-label lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">පැය</div></div>
+          <div style="font-family:'Cinzel',serif;font-size:2rem;color:rgba(255,255,255,0.5);align-self:flex-start;padding-top:0.7rem;">:</div>
+          <div class="timer-unit"><div class="timer-num" id="minutes">00</div><div class="timer-label lang-en">Minutes</div><div class="timer-label lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">මිනිත්තු</div></div>
+          <div style="font-family:'Cinzel',serif;font-size:2rem;color:rgba(255,255,255,0.5);align-self:flex-start;padding-top:0.7rem;">:</div>
+          <div class="timer-unit"><div class="timer-num" id="seconds">00</div><div class="timer-label lang-en">Seconds</div><div class="timer-label lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">තත්පර</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AGENDA ── -->
+<section class="px-4 py-10 section-reveal" style="background:rgba(255,248,197,0.4);">
+  <div class="max-w-2xl mx-auto">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem;">
+    
+    <h2 class="section-title lang-en">Event Agenda</h2>
+    <h2 class="section-title-si lang-si" style="display:none;">වැඩසටහන</h2>
+    <img src="image_5.png" alt="Decorative Raban" style="width: 45px; height: auto;">
+  </div>
+    <div class="divider-gold"><span>✦</span></div>
+
+    <div class="deco-border" style="background:rgba(255,253,240,0.8); backdrop-filter:blur(4px);">
+      <div style="padding:1.2rem 0.5rem;">
+        <div id="agendaList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- ── LOCATION ── -->
+  <section class="px-4 py-10 section-reveal">
+    <div class="max-w-2xl mx-auto">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 0.5rem;">
+        <img src="image_4.png" alt="Decorative Bird" style="width: 45px; height: auto;">
+      <h2 class="section-title lang-en" style="margin-bottom: 0;">Event Location</h2>
+      <h2 class="section-title-si lang-si" style="display:none; margin-bottom: 0;">ස්ථානය</h2>
+      </div>
+      <div class="divider-gold"><span>✦</span></div>
+
+      <div style="background:rgba(255,253,240,0.9);border-radius:16px;padding:1.5rem;border:1px solid var(--gold-pale);box-shadow:0 4px 20px var(--shadow-gold);">
+        <!-- Map Embed -->
+        <div class="map-frame" style="margin-bottom:1.2rem;">
+          <<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15843.101824974774!2d79.88096952438356!3d6.917427059041686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25961605936a7%3A0xdc9933f10c62d8a0!2sCivil%20%26%20Structural%20Engineering%20Consultants%20(Pvt)%20Limited%20-%20Head%20Office!5e0!3m2!1sen!2slk!4v1775714796869!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+
+        <!-- Location details -->
+        <div style="display:flex;align-items:flex-start;gap:0.8rem;margin-bottom:1rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:2px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#C9922A" opacity="0.8"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
+          <div>
+            <p style="font-family:'Cinzel',serif;font-weight:600;color:var(--brown-dark);font-size:0.95rem;" class="lang-en">CSEC Head Office</p>
+            <p style="font-family:'Noto Sans Sinhala',sans-serif;font-weight:600;color:var(--brown-dark);font-size:0.9rem;display:none;" class="lang-si">CSEC Head Office</p>
+            <p style="font-size:0.82rem;color:var(--text-mid);margin-top:0.2rem;" class="lang-en">Colombo, Sri Lanka</p>
+            <p style="font-family:'Noto Sans Sinhala',sans-serif;font-size:0.82rem;color:var(--text-mid);margin-top:0.2rem;display:none;" class="lang-si">කොළඹ, ශ්‍රී ලංකාව</p>
+          </div>
+        </div>
+
+        <div style="text-align:center;">
+          <a href="https://maps.google.com/?q=Colombo,Sri+Lanka" target="_blank" class="directions-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/></svg>
+            <span class="lang-en">Get Directions</span>
+            <span class="lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">මාර්ගය ලබාගන්න</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CLOSING NOTE ── -->
+<section class="px-4 py-10 section-reveal" style="background:rgba(255,248,197,0.3); text-align:center;">
+  <div class="max-w-xl mx-auto">
+    
+    <div style="display:flex; justify-content:center; margin-bottom:1.5rem;">
+      <img src="image_6.png" alt="Happy New Year" style="max-width: 280px; width: 100%; height: auto; border-radius: 12px;">
+    </div>
+
+    <p style="font-family:'Cinzel',serif; font-size:1.1rem; font-weight:600; color:var(--brown-dark); margin-bottom:0.6rem;" class="lang-en">
+      Wishing You a Blessed New Year
+    </p>
+    
+    <p style="font-family:'Noto Sans Sinhala',sans-serif; font-size:1.2rem; font-weight:600; color:var(--gold); margin-bottom:0.6rem; display:none;" class="lang-si">
+      සුබ අලුත් අවුරුද්දක් වේවා!
+    </p>
+
+    <p style="font-family:'Cinzel',serif; font-size:0.82rem; color:var(--text-mid); letter-spacing:0.1em;" class="lang-en">
+      Come celebrate with the CSEC Family
+    </p>
+    <p style="font-family:'Noto Sans Sinhala',sans-serif; font-size:0.82rem; color:var(--text-mid); display:none;" class="lang-si">
+      CSEC පවුල සමඟ සමරන්න එක්වන්න
+    </p>
+
+  </div>
+</section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer-band">
+     <p style="font-family:'Cinzel',serif;font-size:0.9rem;font-weight:600;letter-spacing:0.1em;margin-bottom:0.3rem;">CIVIL & STRUCTURAL ENGINEERING CONSULTANTS</p>
+    <p style="font-size:0.75rem;opacity:0.6;letter-spacing:0.05em;">CSEC (Pvt.) Ltd. &nbsp;·&nbsp; Avurudu Festival 2026</p>
+  </footer>
+
+</div><!-- /main-content -->
+
+<script>
+// ══════════════════════════════════════
+// AGENDA DATA
+// ══════════════════════════════════════
+const agenda = [
+  { time: "10.00 a.m", en: "Start of Event", si: "උත්සවය ආරම්භය" },
+  { time: "10.05 a.m", en: "Kiri Ithiraweema", si: "කිරි ඉතිරවීම" },
+  { time: "10.20 a.m", en: "Awurudu Table", si: "අවුරුදු මේසය" },
+  { time: "10.50 a.m", en: "Sangawunu Amuththa Guessing & Papaya Seed Guessing", si: "සැඟවූ අමුත්ත හොයන්න & ගස්ලබු ඇට ගැණීම" },
+  { time: "10.55 a.m", en: "Aliyata Asa Thabeema", si: "අලියාට ඇස තබීම" },
+  { time: "11.15 a.m", en: "Face the Cookie", si: "කේක් කෙළිය" },
+  { time: "11.25 a.m", en: "Lime and Spoon", si: "හීං ලෙමොන් හා හැන්ද" },
+  { time: "11.40 a.m", en: "Beer in a Straw", si: "නළ ඔස්සේ බොන්න" },
+  { time: "11.55 a.m", en: "Kana Mutti", si: "කණා මුට්ටිය" },
+  { time: "12.15 p.m", en: "Bottle Filling", si: "බෝතල් පිරවීම" },
+  { time: "12.30 – 1.05 p.m", en: "Lunch Break", si: "දිවා ආහාර විවේකය" },
+  { time: "1.05 p.m", en: "Yoghurt Feeding", si: "කිරිබත් ලෙලිම" },
+  { time: "1.20 p.m", en: "Find the Coin", si: "කාසිය සොයන්න" },
+  { time: "1.35 p.m", en: "Musical Chairs", si: "සංගීත පුටු" },
+  { time: "2.00 p.m", en: "Tea Yaraya", si: "තේ යාරය" },
+  { time: "2.20 p.m", en: "Water Balloon Passing", si: "වතුර බැලූන් යැවීම" },
+  { time: "2.35 p.m", en: "Tug of War", si: "කිදා ගැනීම" },
+  { time: "3.00 p.m", en: "CSEC Awurudu Kumara / Kumariya", si: "CSEC අවුරුදු කුමාර / කුමාරිය" },
+  { time: "3.30 p.m", en: "Prize Giving", si: "ත්‍යාග ප්‍රදානය" },
+  { time: "4.00 p.m", en: "Closing Remarks", si: "අවසන් ප්‍රකාශය" },
+];
+
+// Current language
+let currentLang = 'en';
+
+// ── Build agenda ──
+function buildAgenda() {
+  const list = document.getElementById('agendaList');
+  list.innerHTML = agenda.map((item, i) => `
+    <div class="agenda-item" style="animation: fadeUp 0.4s ${i * 0.04}s both;">
+      <div class="agenda-time">${item.time}</div>
+      <div class="agenda-dot"></div>
+      <div class="agenda-name">
+        <span class="lang-en">${item.en}</span>
+        <span class="lang-si" style="display:none;font-family:'Noto Sans Sinhala',sans-serif;">${item.si}</span>
+      </div>
+    </div>
+  `).join('');
+  if (currentLang === 'si') applyLang('si');
+}
+
+// ── Countdown Timer ──
+const eventDate = new Date('2026-04-21T10:00:00');
+
+function updateTimer() {
+  const now = new Date();
+  const diff = eventDate - now;
+  if (diff <= 0) {
+    document.getElementById('days').textContent = '00';
+    document.getElementById('hours').textContent = '00';
+    document.getElementById('minutes').textContent = '00';
+    document.getElementById('seconds').textContent = '00';
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('days').textContent = String(d).padStart(2,'0');
+  document.getElementById('hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('minutes').textContent = String(m).padStart(2,'0');
+  document.getElementById('seconds').textContent = String(s).padStart(2,'0');
+}
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// ── Language Toggle ──
+function applyLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-en').forEach(el => {
+    el.style.display = lang === 'en' ? '' : 'none';
+  });
+  document.querySelectorAll('.lang-si').forEach(el => {
+    el.style.display = lang === 'si' ? '' : 'none';
+  });
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-si').classList.toggle('active', lang === 'si');
+  // Update open button text
+  document.getElementById('openBtnText').textContent = lang === 'en' ? 'Open Invitation' : 'ආරාධනාව විවෘත කරන්න';
+}
+
+function setLang(lang) {
+  applyLang(lang);
+}
+
+// ── Envelope Open ──
+let envelopeOpened = false;
+
+function playOpenSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const melody = [523.25, 659.25, 783.99, 1046.5];
+    melody.forEach((f, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine'; o.frequency.value = f;
+      const t = ctx.currentTime + i * 0.18;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.06, t + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+      o.start(t); o.stop(t + 2);
+    });
+  } catch(e) {}
+}
+
+function openEnvelope() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+
+  // 1. Seal crumbles
+  document.getElementById('env-seal').classList.add('broken');
+
+  // 2. Flap opens
+  setTimeout(() => {
+    document.getElementById('env-flap').classList.add('open');
+  }, 420);
+
+  // 3. Sound + show main content
+  setTimeout(() => {
+    playOpenSound();
+    document.getElementById('envelope-scene').classList.add('hidden');
+    const main = document.getElementById('main-content');
+    main.style.display = 'block';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      main.classList.add('fade-in');
+      buildAgenda();
+      initScrollReveal();
+    }));
+  }, 1300);
+}
+
+
+// ── Scroll Reveal ──
+function initScrollReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+}
+
+// Mark all section-reveals visible that are already in view on load
+window.addEventListener('load', () => {
+  // trigger for main content sections once revealed
+});
+</script>
+</body>
+</html>
