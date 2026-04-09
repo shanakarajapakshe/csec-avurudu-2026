@@ -625,6 +625,41 @@
     </div>
   </section>
 
+   <!-- ── RSVP ── -->
+<section class="px-4 py-10 section-reveal">
+  <div class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl border border-gold" style="background:rgba(255,253,240,0.95);">
+    <h2 class="text-center font-bold text-2xl mb-6" style="font-family:'Cinzel',serif; color:var(--brown-dark);">Confirm Attendance</h2>
+    
+    <form id="rsvpForm" class="space-y-4">
+      <div>
+        <label style="color:var(--brown-dark); font-weight:600;">Full Name</label>
+        <input type="text" name="name" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required placeholder="Enter your name">
+      </div>
+      
+      <div>
+        <label style="color:var(--brown-dark); font-weight:600;">Will you attend?</label>
+        <select name="attendance" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold">
+          <option value="Yes">Yes, I will be there</option>
+          <option value="No">No, I cannot attend</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="color:var(--brown-dark); font-weight:600;">Meal Preference</label>
+        <select name="meal" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gold">
+          <option value="Non-Veg">Non-Vegetarian</option>
+          <option value="Veg">Vegetarian</option>
+        </select>
+      </div>
+
+      <button type="submit" id="submitBtn" style="display: block !important; width: 100%; background-color: #C9922A; color: white; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px;">
+    Submit RSVP
+    </button>
+    </form>
+    <p id="msg" class="text-center mt-4 font-semibold" style="color:var(--green-fresh);"></p>
+  </div>
+</section>
+
   <!-- ── CLOSING NOTE ── -->
 <section class="px-4 py-10 section-reveal" style="background:rgba(255,248,197,0.3); text-align:center;">
   <div class="max-w-xl mx-auto">
@@ -815,6 +850,44 @@ function initScrollReveal() {
 window.addEventListener('load', () => {
   // trigger for main content sections once revealed
 });
+</script>
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxD1MBbr6gDZis8FPAuscfI5E5utE8aWQH04lkdCjmQjEvdPUzo4OprzZigyBcEDBgA/exec';
+  const form = document.getElementById('rsvpForm');
+  const msg = document.getElementById('msg');
+  const btn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.innerHTML = "Sending...";
+
+    const data = {
+      name: form.name.value,
+      attendance: form.attendance.value,
+      meal: form.meal.value
+    };
+
+    fetch(scriptURL, { 
+        method: 'POST', 
+        mode: 'no-cors', // CORS ප්‍රශ්න මගහරවා ගැනීමට
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        msg.innerHTML = "Thank you! Your response has been recorded.";
+        btn.disabled = false;
+        btn.innerHTML = "Submit RSVP";
+        form.reset();
+    })
+    .catch(error => {
+        console.error('Error!', error.message);
+        msg.innerHTML = "Error sending. Please try again.";
+        btn.disabled = false;
+        btn.innerHTML = "Submit RSVP";
+    });
+  });
 </script>
 </body>
 </html>
